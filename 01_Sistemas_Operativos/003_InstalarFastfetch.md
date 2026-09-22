@@ -1,5 +1,9 @@
+[Regresar](README.md)
+
+---
+
 ----------------------------------------------------------------------------------------
-Instalar Fastfetch en Debian 13
+# Instalar Fastfetch en Debian 13
 ----------------------------------------------------------------------------------------
 Observación:
 Si al ejecutar la siguiente línea: sudo apt update

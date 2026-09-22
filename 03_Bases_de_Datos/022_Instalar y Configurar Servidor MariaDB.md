@@ -1,5 +1,9 @@
+[Regresar](README.md)
+
+---
+
 --------------------------------------------------------------------------------------------------------
-Desinstalar, Instalar y Configurar MariaDB en Debian 13
+# Desinstalar, Instalar y Configurar MariaDB en Debian 13
 --------------------------------------------------------------------------------------------------------
 Verificar si MariaDB está instalado
 sudo systemctl status mariadb

@@ -1,5 +1,9 @@
+[Regresar](README.md)
+
+---
+
 ----------------------------------------------------------------------------------------
-Arreglar errores de dpkg en Debian 13
+# Arreglar errores de dpkg en Debian 13
 ----------------------------------------------------------------------------------------
 Validar que exista el paquete vim
 which vim

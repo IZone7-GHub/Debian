@@ -1,5 +1,9 @@
+[Regresar ](README.md)
+
+---
+
 -------------------------------------------------------------------------------------------------------
-Instalar y Configurar PhpMyAdmin en Debian 13
+# Instalar y Configurar PhpMyAdmin en Debian 13
 -------------------------------------------------------------------------------------------------------
 Validar si tenemos phpMyAdmin en nuestro sistema.
 dpkg -l | grep phpmyadmin

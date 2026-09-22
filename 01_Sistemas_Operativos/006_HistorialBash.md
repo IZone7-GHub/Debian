@@ -1,5 +1,9 @@
+[Regresar](README.md)
+
+---
+
 --------------------------------------------------------------------------------------
-Cómo ver, borrar y limpiar el historial de comandos en Debian 13
+# Cómo ver, borrar y limpiar el historial de comandos en Debian 13
 --------------------------------------------------------------------------------------
 1.- Tipos de shell: bash o zsh.
 Para conocer el tipo de shell es con el siguiente comando:

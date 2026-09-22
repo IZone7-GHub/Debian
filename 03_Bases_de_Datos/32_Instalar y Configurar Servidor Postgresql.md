@@ -1,5 +1,9 @@
+[Regresar](README.md)
+
+---
+
 -------------------------------------------------------------------------------------------------------------------
-Instalar y Configurar Servidor PostgreSQL en Debian 13
+# Instalar y Configurar Servidor PostgreSQL en Debian 13
 -------------------------------------------------------------------------------------------------------------------
 Verificar el cliente para poder interactuar con Postgresql 
 psql --version

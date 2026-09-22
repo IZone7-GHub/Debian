@@ -1,5 +1,9 @@
+[Regresar](README.md)
+
+---
+
 ---------------------------------------------------------------------------------------------
-Unir archivos de texto en 1 solo con Debian 13
+# Unir archivos de texto en 1 solo con Debian 13
 ---------------------------------------------------------------------------------------------
 Ingresar a la carpeta tutoriales
 cd tutoriales

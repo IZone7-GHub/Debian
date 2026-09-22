@@ -1,5 +1,9 @@
+[Regresar](README.md)
+
+---
+
 ------------------------------------------------------------------------------------
-Crear y Configurar repositorios de Debian  Linux 
+# Crear y Configurar repositorios de Debian  Linux 
 ------------------------------------------------------------------------------------
 01.– sudo apt update
 Actualizar la lista de paquetes disponibles (no actualiza programas)

@@ -1,5 +1,9 @@
+[Regresar](README.md)
+
+---
+
 --------------------------------------------------------------------------------------------
-Solucionar error Could not get lock en Debian 13
+# Solucionar error Could not get lock en Debian 13
 --------------------------------------------------------------------------------------------
 Verifica que exista gimp:
 which gimp

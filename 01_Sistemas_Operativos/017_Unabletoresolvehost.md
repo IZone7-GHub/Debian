@@ -1,5 +1,9 @@
+[Regresar](README.md)
+
+---
+
 -------------------------------------------------------------------------------------------------------
-Solucionar: unable to resolve host Name or service not known
+# Solucionar: unable to resolve host Name or service not known
 -------------------------------------------------------------------------------------------------------
 Visualizar el mensaje de: unable to resolve host
 sudo apt update

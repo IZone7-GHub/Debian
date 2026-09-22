@@ -1,6 +1,9 @@
+[Regresar](README.md)
+
+---
+
 ------------------------------------------------------------------------------------------------------------------
-005
-Guía de comandos basicos de SQL en MariaDB: 
+# Guía de comandos basicos de SQL en MariaDB 005: 
 Creación, Joins y Actualizaciones Cruzadas
 ------------------------------------------------------------------------------------------------------------------
 En anteriores videos vimos como instalar MariaDB en Debian13 y creación de tablas con algunas consultas

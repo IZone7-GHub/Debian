@@ -1,7 +1,9 @@
------------------------------------------------------------
-Actualizar Linux Debian 13
------------------------------------------------------------
+[Regresar](README.md)
 
+---
+
+-----------------------------------------------------------
+# Actualizar Linux Debian 13
 -----------------------------------------------------------
 1. sudo apt update
 Actualizar la lista de paquetes disponibles (no actualiza programas)
