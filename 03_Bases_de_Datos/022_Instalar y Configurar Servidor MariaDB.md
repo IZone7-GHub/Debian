@@ -3,6 +3,7 @@
 -------------------------------------------------------------------------------------------------------
 # Desinstalar, Instalar y Configurar MariaDB en Debian 13
 --------------------------------------------------------------------------------------------------------
+```
 - Verificar si MariaDB está instalado
 sudo systemctl status mariadb
 --------------------------------------------------------------------------------------------------------
@@ -50,10 +51,11 @@ mariadb -u root -p -e "SELECT User, Host FROM mysql.user;"
 Se le escribe la letra D para que utilice por defecto la base de datos izone_db
 mariadb -u root -p -D izone_db -e "SHOW DATABASES; SHOW TABLES; SELECT User, Host FROM mysql.user;"
 --------------------------------------------------------------------------------------------------------
-
+```
 --------------------------------------------------------------------------------------------------------
 # Desinstalación Completa
 --------------------------------------------------------------------------------------------------------
+```
 - Verificar el servicio
 sudo systemctl status mariadb
 --------------------------------------------------------------------------------------------------------
@@ -90,10 +92,11 @@ No debe de salir nada
 sudo systemctl status mariadb
 Unit mariadb.service could not be found.
 --------------------------------------------------------------------------------------------------------
-
+```
 --------------------------------------------------------------------------------------------------------
 # Instalación Limpia y Configuración
 --------------------------------------------------------------------------------------------------------
+```
 - Actualizar los repositorios del sistema
 sudo apt update
 Si aparecen packages pueden ser upgraded
@@ -126,20 +129,20 @@ y (si)  a todo lo demás
 ¿Deseas cambiar a la autenticación por socket de Unix?
 Switch to unix_socket authentication [Y/n]: n
 
-Cambiar la contraseña de root, nos va a pedir 2 veces para confirmar que es la misma
+- Cambiar la contraseña de root, nos va a pedir 2 veces para confirmar que es la misma
 Change the root password? [Y/n]: y  
 Contraseña (12345)  <<== Esta contraseña es para solo utilizar en el vídeo, no la pongan en un entorno real
 Confirmación (12345)  <<== Esta contraseña es para solo utilizar en el vídeo, no la pongan en un entorno real
 
-¿Deseas eliminar los usuarios anónimos?
+- ¿Deseas eliminar los usuarios anónimos?
 Le decimos a MariaDB que no puede entrar nadie sin hacer login evitamos los usuarios fantasmas
 Remove anonymous users? [Y/n]: y
 
-¿Deseas prohibir que el usuario root inicie sesión de forma remota?
+- ¿Deseas prohibir que el usuario root inicie sesión de forma remota?
 Le decimos a  MariaDB que todo lo que quieran hacer, lo van a realizar en nuestras instalaciones y no fuera de ellas
 Disallow root login remotely? [Y/n]: y
 
-¿Deseas eliminar la base de datos llamada 'test' y el acceso a ella?
+- ¿Deseas eliminar la base de datos llamada 'test' y el acceso a ella?
 Cada vez que instalamos MariaDB desde cero, 
 El sistema crea automáticamente unas bases de datos internas para poder funcionar.
 Una de ellas es la base de datos llamada test.
@@ -158,7 +161,7 @@ MariaDB [none]
 - Ver la versión del motor de base de datos y el usuario actual
 MariaDB [(none)]> SELECT VERSION(), CURRENT_USER;
 --------------------------------------------------------------------------------------------------------
-- Ver las Bases de datos que generó MariaDB
+- Ver las Bases de datos que generó MariaDB 
 MariaDB [(none)]> SHOW DATABASES;
 Importante: Estas solo son para mirar pero no tenemos que tocarlas
 Nos va a mostrar 4 bases de datos
@@ -218,21 +221,21 @@ fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 - **Que significa:**
-  - `CREATE TABLE` = Crear tabla (nombre de la tabla)
-  - `id` = Nombre de nuestra primer columna
-  - `INT` = Número Entero
-  - `AUTO_INCREMENT` = Contador de la tabla
-  - `PRIMARY KEY` = Llave Primaria
-  - `nombre` = Nombre de nuestra segunda columna
-  - `VARCHAR` = Texto Variable de longitud (numeros, letras, simbolos) en este fue a 50
-  - `NOT NULL` = Campo obligatorio, no puede estar estar vacío
-  - `email` = Nombre de nuestra tercer columna
-  - `VARCHAR` = Texto Variable de longitud (numeros, letras, simbolos) en este fue a 100
-  - `UNIQUE NOT NULL` = Campo obligatorio y ademas que no se repita con otro registro
-  - `fecha_registro` = Nombre de nuestra cuarta columna
-  - `TIMESTAMP` = Tipo para fecha y hora.
-  - `DEFAULT CURRENT_TIMESTAMP` = Coloque la hora y fecha exacta en el campo 
-  - ` Cerramos con:** `);`
+  - CREATE TABLE` = Crear tabla (nombre de la tabla)
+  - id = Nombre de nuestra primer columna
+  - INT = Número Entero
+  - AUTO_INCREMENT = Contador de la tabla
+  - PRIMARY KEY = Llave Primaria
+  - nombre = Nombre de nuestra segunda columna
+  - VARCHAR = Texto Variable de longitud (numeros, letras, simbolos) en este fue a 50
+  - NOT NULL = Campo obligatorio, no puede estar estar vacío
+  - email = Nombre de nuestra tercer columna
+  - VARCHAR = Texto Variable de longitud (numeros, letras, simbolos) en este fue a 100
+  - UNIQUE NOT NULL = Campo obligatorio y ademas que no se repita con otro registro
+  - fecha_registro = Nombre de nuestra cuarta columna
+  - TIMESTAMP = Tipo para fecha y hora.
+  - DEFAULT CURRENT_TIMESTAMP = Coloque la hora y fecha exacta en el campo 
+  -  Cerramos con: );`
 
 --------------------------------------------------------------------------------------------------------
 - Validamos que se haya creado la tabla usuarios_tb
@@ -261,7 +264,6 @@ MariaDB [izonedb]>EXIT;
 - Insertamos registros desde un archivo externo a la tabla: usuarios_tb
 mariadb -u izone_us -p12345 izone_db
 
-
 Para importar el archivo .csv que esta en tutoriales y se llama usuarios.csv
 MariaDB [izonedb]> 
 LOAD DATA LOCAL INFILE '/home/izone/tutoriales/usuarios.csv'
@@ -273,16 +275,16 @@ IGNORE 1 ROWS
 (nombre, email);
 
 - ¿Que significa cada línea?
-- ` LOAD DATA LOCAL INFILE: Comando de MariaDB para cargar archivos externos.
-- ` FIELDS TERMINATED BY ',': Indicamos que las columnas en el CSV están separadas por comas.
-- ` ENCLOSED BY '"': Si hay textos con comillas dobles, los respete.
-- ` LINES TERMINATED BY '\n': Cada registro cambia con un salto de línea.
-- ` IGNORE 1 ROWS: Se salta la primera línea del CSV porque contiene los títulos, lo toma desde la segunda fila.
+- LOAD DATA LOCAL INFILE: Comando de MariaDB para cargar archivos externos.
+- FIELDS TERMINATED BY ',': Indicamos que las columnas en el CSV están separadas por comas.
+- ENCLOSED BY '"': Si hay textos con comillas dobles, los respete.
+- LINES TERMINATED BY '\n': Cada registro cambia con un salto de línea.
+- IGNORE 1 ROWS: Se salta la primera línea del CSV porque contiene los títulos, lo toma desde la segunda fila.
 (nombre, email) Le indicamos las columnas donde debe ingresar los registros.
-- ` Debe de aparecer según los registros que tenga el archivo
-- ` En este caso fue asi
-- ` Query OK, 25 rows affected
-- ` Records: 25
+- Debe de aparecer según los registros que tenga el archivo
+- En este caso fue asi
+- Query OK, 25 rows affected
+- Records: 25
 --------------------------------------------------------------------------------------------------------
 - Para ver si cargo los registros
 MariaDB [izonedb]>SELECT * FROM usuarios_tb;

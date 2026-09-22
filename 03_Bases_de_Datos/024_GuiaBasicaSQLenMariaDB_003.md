@@ -3,6 +3,7 @@
 -------------------------------------------------------------------------------------------------------------
 # Guía de comandos basicos de SQL en MariaDB 003: 
 -------------------------------------------------------------------------------------------------------------
+```
 Se generó anteriormente: 
 Base de Datos llamada: BASE001
 Tabla: CONTACTOS
@@ -96,3 +97,4 @@ SELECT * FROM CONTACTOS ORDER BY EDAD DESC;
 Nos va a mostrar los registros que contiene la tabla CONTACTOS
 Va a ordenar de manera Descendente el campo EDAD de la tabla CONTACTOS
 -------------------------------------------------------------------------------------------------------------
+```

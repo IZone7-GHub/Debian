@@ -3,6 +3,7 @@
 -------------------------------------------------------------------------------------------
 # Crear Entorno Python en Debian 13
 -------------------------------------------------------------------------------------------
+```
 Ver la version que tenemos de python
 python3 --version
 Salida sería así: Python 3.13.5 (3.13 es la version y el .5 es la versión del parche)
@@ -73,3 +74,4 @@ Si es ejecutable:
 Desactivar el entorno
 deactivate
 -------------------------------------------------------------------------------------------
+```

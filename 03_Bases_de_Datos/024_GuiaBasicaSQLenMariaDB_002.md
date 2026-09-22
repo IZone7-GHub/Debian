@@ -3,6 +3,7 @@
 ----------------------------------------------------------------------------------------------------------------
 # Guía de comandos basicos de SQL en MariaDB 002: 
 ----------------------------------------------------------------------------------------------------------------
+```
 Exportar los registros de una tabla a un archivo .csv
 mysql -u root -p BASE001 \
 > -E "SELECT * FROM CONTACTOS;" \
@@ -22,3 +23,4 @@ mysql -u root -p BASE001 \
 Escribir contraseña de MariaDB
 Y el archivo lo importa correctamente a nuestra tabla CONTACTOS.
 ----------------------------------------------------------------------------------------------------------------
+```

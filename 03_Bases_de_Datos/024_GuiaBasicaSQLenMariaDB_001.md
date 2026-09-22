@@ -3,6 +3,7 @@
 ---------------------------------------------------------------------------------------------------------------
 # Guía de comandos basicos de SQL en MariaDB 001: 
 ---------------------------------------------------------------------------------------------------------------
+```
 Validar que el servicio este activo
 sudo systemctl status mariadb
 Debe de estar Active
@@ -64,3 +65,4 @@ SELECT * FROM BASE001.CONTACTOS;
 
 Nos va a mostrar los registros que insertamos.
 ---------------------------------------------------------------------------------------------------------------
+```

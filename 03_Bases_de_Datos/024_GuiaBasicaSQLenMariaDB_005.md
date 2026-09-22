@@ -4,6 +4,7 @@
 # Guía de comandos basicos de SQL en MariaDB 005: 
 Creación, Joins y Actualizaciones Cruzadas
 ------------------------------------------------------------------------------------------------------------------
+```
 En anteriores videos vimos como instalar MariaDB en Debian13 y creación de tablas con algunas consultas
 Lo que vamos a hacer son consultas con joins y actualizaciones cruzadas o match de información
 Pero con unas tablas con más campos
@@ -269,3 +270,4 @@ SELECT * FROM NOMBRES;
 DROP TABLE CONTACTOS, NOMBRES;
 SHOW TABLES;
 ------------------------------------------------------------------------------------------------------------------
+```

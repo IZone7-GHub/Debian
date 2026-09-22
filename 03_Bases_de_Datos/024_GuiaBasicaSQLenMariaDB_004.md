@@ -3,6 +3,7 @@
 ------------------------------------------------------------------------------------------------------------------
 # Guía de comandos basicos de SQL en MariaDB 004: 
 ------------------------------------------------------------------------------------------------------------------
+```
 Se generó anteriormente: 
 Base de Datos llamada: BASE001
 Tabla: CONTACTOS
@@ -78,3 +79,4 @@ LEFT JOIN FOLIOS
 ON CONTACTOS.NOMBRE = FOLIOS.NOMBRE;
 Nos va a mostrar todos los registros de la tabla CONTACTOS y va a mostrar NULL los que no hagan match en la columna NUMEROFOLIO
 ------------------------------------------------------------------------------------------------------------------
+```

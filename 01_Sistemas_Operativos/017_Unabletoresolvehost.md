@@ -19,7 +19,7 @@ Para visualizar el contenido de: /etc/hostname y de /etc/hosts
 cat /etc/hostname  
 Visualizar contenido (Nombre)  
 
-cat /etc/hosts  
+- cat /etc/hosts  
 Visualizar contenido (Nombre)  
 -------------------------------------------------------------------------------------------------------  
 - Abrir el contenido de etc/hostname:  

@@ -3,6 +3,7 @@
 -------------------------------------------------------------------------------------------------------
 # Instalar y Configurar PhpMyAdmin en Debian 13
 -------------------------------------------------------------------------------------------------------
+```
 Validar si tenemos phpMyAdmin en nuestro sistema.
 dpkg -l | grep phpmyadmin
 
@@ -258,3 +259,4 @@ contraseña: 12345
 Debemos de ver las tablas: information_schema y usuarios_tb 
 Cerrar
 -------------------------------------------------------------------------------------------------------
+```
