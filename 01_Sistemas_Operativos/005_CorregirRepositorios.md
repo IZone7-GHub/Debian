@@ -1,7 +1,5 @@
 [Regresar](README.md)
 
----
-
 ------------------------------------------------------------------------------------
 # Crear y Configurar repositorios de Debian  Linux   
 ------------------------------------------------------------------------------------  
@@ -63,16 +61,16 @@ Ctrl + Shift + V: Pegar el contenido en el nano
 
 - Pegar este contenido:  
 
-``# Debian 13 "Trixie" - Paquetes normales  
+\# Debian 13 "Trixie" - Paquetes normales  
 
 deb https://deb.debian.org/debian/ trixie main contrib non-free non-free-firmware  
 deb-src https://deb.debian.org/debian/ trixie main contrib non-free non-free-firmware  
 
-## Debian 13 "Trixie" - Parches de seguridad  
+\# Debian 13 "Trixie" - Parches de seguridad  
 deb https://security.debian.org/debian-security trixie-security main contrib non-free non-free-firmware  
 deb-src https://security.debian.org/debian-security trixie-security main contrib non-free non-free-firmware  
 
-## Debian 13 "Trixie" - Updates  
+\# Debian 13 "Trixie" - Updates  
 deb https://deb.debian.org/debian/ trixie-updates main contrib non-free non-free-firmware  
 deb-src https://deb.debian.org/debian/ trixie-updates main contrib non-free non-free-firmware  
 
@@ -98,7 +96,7 @@ La solución estándar es eliminar todo el contenido de esta ruta:
 Ejecutar el siguiente comando para eliminar el contenido:  
 sudo rm -rf /var/lib/apt/lists/*  
 
-Ejecutar el siguiente comando decirle a Debian que bajé el catálogo completamente limpio y desde cero:  
+- Ejecutar el siguiente comando decirle a Debian que bajé el catálogo completamente limpio y desde cero:  
 sudo apt update  
 Con esto se hace la "limpieza del pizarrón" por decirlo de alguna manera.  
 Lo va a generar nuevamente el listado en esta ruta: /var/lib/apt/lists/  

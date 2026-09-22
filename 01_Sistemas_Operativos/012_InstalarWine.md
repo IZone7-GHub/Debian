@@ -1,47 +1,43 @@
 [Regresar](README.md)
 
----
-
 --------------------------------------------------------------------------------------------
 # Instalar Wine en Debian13  
 --------------------------------------------------------------------------------------------  
-Validar si tenemos wine  
+- Validar si tenemos wine  
 wine --version  
 --------------------------------------------------------------------------------------------  
-Desinstalar wine completamente  
+- Desinstalar wine completamente  
 Eliminar paquetes y configuraciones:  
 sudo apt purge wine wine32:i386 wine64 winetricks  
 Escribir Y (Sí)  
 --------------------------------------------------------------------------------------------  
-Limpiar dependencias huérfanas:  
+- Limpiar dependencias huérfanas:  
 sudo apt autoremove --purge  
 Escribir Y (Sí)  
 --------------------------------------------------------------------------------------------  
-Borrar carpetas ocultas de configuración:  
+- Borrar carpetas ocultas de configuración:  
 rm -rf ~/.wine  
 rm -rf ~/.local/share/applications/wine*  
 rm -rf ~/.local/share/wineprefixes  
 --------------------------------------------------------------------------------------------  
-Validar si existe wine (Ya no debe de aparecer no such file or directory )  
+- Validar si existe wine (Ya no debe de aparecer no such file or directory )  
 wine --version  
 --------------------------------------------------------------------------------------------  
-
+# Instalacion  
 --------------------------------------------------------------------------------------------  
-Instalacion  
---------------------------------------------------------------------------------------------  
-Habilitar la arquitectura de 32 bits  
+- Habilitar la arquitectura de 32 bits  
 sudo dpkg --add-architecture i386  
 sudo apt update  
 --------------------------------------------------------------------------------------------  
-Instalar Wine y Winetricks  
+- Instalar Wine y Winetricks  
 Instalamos el paquete meta-wine (que decide si usar 64 o 32 bits según sea necesario) y las herramientas.  
 Nota: Se tarda un poco  
 sudo apt install wine wine32:i386 wine64 winetricks  
 Escribir Y (Sí)  
 --------------------------------------------------------------------------------------------  
-sudo apt update  
+- sudo apt update  
 --------------------------------------------------------------------------------------------  
-Crear el Prefijo  
+- Crear el Prefijo  
 WINEPREFIX=/home/izone/Wine WINEARCH=win32 winecfg  
 Seleccionar:  
 Windows 7  
@@ -49,31 +45,31 @@ Graphics
 Emulate activada es Ventana / Emulate No activada es Pantalla Completa  
 Aplicar  
 --------------------------------------------------------------------------------------------  
-Instalación de Librerías Gráficas (DirectX)  
+- Instalación de Librerías Gráficas (DirectX)  
 Para que los juegos no den errores de .dll faltantes:  
 WINEPREFIX=/home/izone/Wine winetricks d3dx9 corefonts  
 Se abre varias ocasiones la ventana y se cierra  
 --------------------------------------------------------------------------------------------  
-Preparar el entorno en Debian  
+- Preparar el entorno en Debian  
 Dar permisos  
 sudo chown -R izone:izone /home/izone/Wine  
 --------------------------------------------------------------------------------------------  
-Visualizar el contenido en la carpeta Wine  
+- Visualizar el contenido en la carpeta Wine  
 ls  
 --------------------------------------------------------------------------------------------  
-Crear una carpeta que se va a llamar Games  
+- Crear una carpeta que se va a llamar Games  
 mkdir -p /home/izone/Wine/drive_c/Games  
 --------------------------------------------------------------------------------------------  
-Pasamos un portable que se llama GovernorofPoker que esta en la ruta tutoriales  
+- Pasamos un portable que se llama GovernorofPoker que esta en la ruta tutoriales  
 Ingresamos a la ruta Games con:  
 cd /home/izone/Wine/drive_c/Games  
 --------------------------------------------------------------------------------------------  
-Copiar el portable que lo tenemos en tutoriales  
+- Copiar el portable que lo tenemos en tutoriales  
 cp -rv /home/izone/tutoriales/GovernorPoker .  
 --------------------------------------------------------------------------------------------  
-Validamos si la carpeta se copió correctamente  
+- Validamos si la carpeta se copió correctamente  
 ls  
 --------------------------------------------------------------------------------------------  
-Ejecutar el juego con :  
+- Ejecutar el juego con :  
 WINEPREFIX=/home/izone/Wine wine start /d "C:\\Games\\GovernorPoker" GovernorofPoker.exe  
 --------------------------------------------------------------------------------------------  

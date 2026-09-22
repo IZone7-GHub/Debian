@@ -1,38 +1,36 @@
 [Regresar](README.md)
 
----
-
 --------------------------------------------------------------------------------------
 # Cómo ver, borrar y limpiar el historial de comandos en Debian 13  
 --------------------------------------------------------------------------------------  
-1.- Tipos de shell: bash o zsh.  
+1. Tipos de shell: bash o zsh.  
 Para conocer el tipo de shell es con el siguiente comando:  
 ps -p $$  
 
-Nuestra salida:  
+- Nuestra salida:  
 PID TTY          TIME CMD  
 20083 pts/0    00:00:00 bash  <<== Aquí menciona si estamos como Bash o Zsh.  
 --------------------------------------------------------------------------------------  
-2.- Visualizar el historial, funciona igual en bash y zsh:  
+2. Visualizar el historial, funciona igual en bash y zsh:  
 history  
 --------------------------------------------------------------------------------------  
-3.- Guarda el historial en ~/.bash_history si fuera zsh esta en: ~/.zsh_history.  
+3. Guarda el historial en ~/.bash_history si fuera zsh esta en: ~/.zsh_history.  
 Muestra el historial guardado  
 sudo nano ~/.bash_history  
 --------------------------------------------------------------------------------------  
-4.- Eliminar algunos registros  
+4. Eliminar algunos registros  
 sudo nano ~/.bash_history  
 Ir al inicio de la o las líneas que se quieran eliminar y pulsar Ctrl + K  
 O con la tecla supr para ir de letra por letra.  
 Cuando este listo y las líneas que se quieran estén eliminadas.  
 Guardar y salir  
 --------------------------------------------------------------------------------------  
-5.- Recargar   
+5. Recargar   
 history -w	# Sincronizar                 
 history -c	# Vacia la memoria de la sesión actual   
 history -r		# Lee el archivo limpio y lo carga de nuevo  
 --------------------------------------------------------------------------------------  
-6.- Validar que las líneas ya no estén con este comando:  
+6. Validar que las líneas ya no estén con este comando:  
 history   
 O con el siguiente comando:  
 sudo nano ~/.bash_history  
