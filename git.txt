@@ -1,3 +1,0 @@
-git add .
-git commit -m "Refactor: organizar procedimientos operativos en estructura corporativa"
-git push origin main
