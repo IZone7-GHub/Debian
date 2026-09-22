@@ -1,5 +1,5 @@
 ---------------------------------------------------------------------------------------
-Tuberías en un sistema Debian 13
+Tuberías en un sistema Debian
 ---------------------------------------------------------------------------------------
 
 Generar una carpeta con el nombre de su preferencia

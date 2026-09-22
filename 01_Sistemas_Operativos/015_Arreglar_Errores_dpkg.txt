@@ -1,9 +1,3 @@
-Arreglar errores de dpkg en Debian 13
-Los comentarios están desactivados temporalmente, en lo que termino de hacer todo el contenido.
-Descarga lo que vimos en un archivo de texto en: 
-https://github.com/IZone7-GHub/Debian13
-
-
 ----------------------------------------------------------------------------------------
 Arreglar errores de dpkg en Debian 13
 ----------------------------------------------------------------------------------------
