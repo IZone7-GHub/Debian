@@ -13,9 +13,10 @@
 
 ## 📂 Arquitectura del Repositorio
 
-| Archivo / Tutorial | Descripción del Contenido | Ver Txt | Ver Video <br> (Ctrl + Clic) |
+| Proyecto / Módulo | Descripción | Ver en Vivo (Web) | Ver Código Fuente |
 | :--- | :--- | :--- | :--- |
-| **`001-0_Proceso`** | Atajos de Teclado Básicos en Debian 13 | [![📋 Ver Txt](https://img.shields.io/badge/VER_TXT-475569?style=for-the-badge&logo=googledocs&logoColor=#059669)](README.md) | [![▶ Ver Video](https://img.shields.io/badge/VER_VIDEO-007EC6?style=for-the-badge&logo=icloud&logoColor=white)](https://www.dailymotion.com/video/xar2v4a/) |
-
+| **001_Comparador de Productos** | Buscador estilo BUSCARV con JS, CSV y exportación a PDF. | [🌐 Probar Página](https://izone7-ghub.github.io/Debian/02_Desarrollo_Web/001_ComparadordeProductos.html) | [💻 Ver Código](001_ComparadordeProductos.html) |
+| **002_Encontrar Registros Duplicados** | Buscador estilo BUSCARV con JS, CSV y exportación a PDF. | [🌐 Probar Página](https://izone7-ghub.github.io/Debian/02_Desarrollo_Web/002_EncontrarRegistrosDuplicados.html) | [💻 Ver Código](002_EncontrarRegistrosDuplicados.html) |
+| **003_Simulador Educativo Ciberseguridad** | Buscador estilo BUSCARV con JS, CSV y exportación a PDF. | [🌐 Probar Página](https://izone7-ghub.github.io/Debian/02_Desarrollo_Web/003_Simuladoreducativodeciberseguridad.html) | [💻 Ver Código](003_Simuladoreducativodeciberseguridad.html) |
 
 ---

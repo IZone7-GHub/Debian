@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encontrar Registros Duplicados y Únicos</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+body { font-family: Arial, sans-serif; margin: 20px; background:#f5f5f5; color:#111; }
+h2 { text-align:center; color:#2563eb; margin-bottom:15px; }
+.controls { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin:10px auto; }
+input, button { padding:10px 15px; font-size:16px; border-radius:6px; border:1px solid #ccc; }
+button { background:#2563eb; color:white; border:none; cursor:pointer; transition:0.3s; font-size:16px; }
+button:hover { background:#3b82f6; }
+#resultado { margin-top:20px; max-width:1000px; margin-left:auto; margin-right:auto; }
+.tabla-header { display:flex; justify-content:space-between; font-weight:bold; background:#2563eb; color:white; padding:10px; border-radius:6px 6px 0 0; font-size:16px; }
+ul { list-style:none; padding:0; margin:0; }
+li { display:flex; justify-content:space-between; background:white; margin-bottom:2px; padding:10px; border-radius:0 0 6px 6px; word-break:break-word; font-size:16px; }
+.linea-texto { flex:1; }
+.archivos-texto { flex:1; text-align:right; color:#555; font-weight:bold; }
+.descripcion-unico { flex:1; text-align:right; color:#111; font-weight:normal; }
+@media(max-width:600px){
+  .controls{flex-direction:column;align-items:center;}
+  li,.tabla-header{flex-direction:column;align-items:flex-start;}
+  .archivos-texto, .descripcion-unico{text-align:left;margin-top:5px;}
+  input,button{width:90%;font-size:16px;}
+}
+</style>
+</head>
+<body>
+
+<h2>Encontrar Registros Duplicados y Únicos desde archivos .txt</h2>
+
+<div class="controls">
+<input type="file" id="txtFiles" multiple />
+<button id="procesar">Procesar archivos</button>
+<button id="limpiar">Limpiar resultados</button>
+<button id="exportarPDF">Exportar a PDF</button>
+</div>
+
+<div id="resultado"></div>
+
+<script>
+let allLinesGlobal = [];
+let contadorGlobal = {};
+
+document.getElementById('procesar').addEventListener('click', () => {
+  const files = document.getElementById('txtFiles').files;
+  if(files.length===0){ alert("Selecciona al menos un archivo."); return; }
+
+  allLinesGlobal=[]; contadorGlobal={}; let filesProcessed=0;
+
+  for(const file of files){
+    const reader=new FileReader();
+    reader.onload=(e)=>{
+      const lines=e.target.result.split(/\r?\n/).map(l=>l.trim()).filter(l=>l);
+      lines.forEach((l,index)=>allLinesGlobal.push({linea:l,archivo:file.name,numero:index+1}));
+      filesProcessed++;
+      if(filesProcessed===files.length) procesarLineas(allLinesGlobal);
+    };
+    reader.readAsText(file);
+  }
+});
+
+function procesarLineas(allLines){
+  contadorGlobal={};
+  allLines.forEach(item=>{
+    if(!contadorGlobal[item.linea]){
+      contadorGlobal[item.linea]={total:1, archivos:[{nombre:item.archivo,linea:item.numero}]};
+    } else { contadorGlobal[item.linea].total++; contadorGlobal[item.linea].archivos.push({nombre:item.archivo,linea:item.numero}); }
+  });
+
+  const duplicados=Object.keys(contadorGlobal).filter(k=>contadorGlobal[k].total>1);
+  const unicos=Object.keys(contadorGlobal).filter(k=>contadorGlobal[k].total===1);
+
+  const resultadoDiv=document.getElementById('resultado');
+  resultadoDiv.innerHTML='';
+
+  // Registros Únicos
+  if(unicos.length>0){
+    resultadoDiv.innerHTML+=`
+      <div class="tabla-header">
+        <div>Registros Únicos</div>
+        <div>Descripción</div>
+      </div>
+      <ul>
+        ${unicos.map(u=>`
+          <li>
+            <span class="linea-texto">${u}</span>
+            <span class="descripcion-unico">No se repite en ningún archivo</span>
+          </li>
+        `).join('')}
+      </ul>
+    `;
+  }
+
+  // Registros Duplicados
+  if(duplicados.length>0){
+    resultadoDiv.innerHTML+=`
+      <div class="tabla-header">
+        <div>Registros</div>
+        <div>Registros Duplicados</div>
+      </div>
+      <ul>
+        ${duplicados.map(d=>`
+          <li>
+            <span class="linea-texto">${d}</span>
+            <span class="archivos-texto">${contadorGlobal[d].total} veces en archivos: ${contadorGlobal[d].archivos.map(a=>`${a.nombre} [línea ${a.linea}]`).join(", ")}</span>
+          </li>
+        `).join('')}
+      </ul>
+    `;
+  }
+}
+
+document.getElementById('limpiar').addEventListener('click',()=>{
+  document.getElementById('resultado').innerHTML='';
+  document.getElementById('txtFiles').value='';
+  allLinesGlobal=[]; contadorGlobal={};
+});
+
+// Exportar a PDF en formato de 2 columnas para evitar solapamientos
+document.getElementById('exportarPDF').addEventListener('click',()=>{
+  const unicos = Object.keys(contadorGlobal).filter(u => contadorGlobal[u].total === 1);
+  const duplicados = Object.keys(contadorGlobal).filter(d => contadorGlobal[d].total > 1);
+
+  if(unicos.length===0 && duplicados.length===0){
+    alert("No hay registros para exportar");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  // unidad mm y formato A4
+  const doc = new jsPDF({unit: 'mm', format: 'a4'});
+  const leftMargin = 10;
+  const pageInnerWidth = 190; // 210 - 2*10
+  const topMargin = 20;
+  const bottomLimit = 287; // margen inferior aproximado
+  let y = topMargin;
+
+  // Columnas: ajusta según prefieras
+  const leftColWidth = 110;
+  const rightColWidth = pageInnerWidth - leftColWidth;
+  const leftColX = leftMargin;
+  const rightColX = leftMargin + leftColWidth + 4; // pequeño espacio entre columnas
+  const lineHeight = 6;
+  const headerHeight = 10;
+
+  function dibujarTituloPrincipal(){
+    doc.setFontSize(16);
+    doc.setTextColor(37,99,235);
+    // Centrar título en la zona de impresión
+    const titulo = "Encontrar Registros Duplicados y Únicos";
+    const titleX = leftMargin + pageInnerWidth / 2;
+    doc.text(titulo, titleX, y, {align: 'center'});
+    y += 8;
+  }
+
+  function nuevaSeccion(titulo, colLeftTitle, colRightTitle){
+    // Si no hay espacio para el header, nueva página
+    if(y + headerHeight + 6 > bottomLimit){ doc.addPage(); y = topMargin; }
+
+    // Barra azul como encabezado de sección
+    doc.setFillColor(37,99,235);
+    doc.rect(leftMargin, y, pageInnerWidth, headerHeight, 'F');
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(12);
+    doc.setFont('helvetica','bold');
+
+    // Títulos de sección y de columnas
+    doc.text(titulo, leftMargin + 2, y + 7);
+    // Columna izquierda
+    doc.text(colLeftTitle, leftColX + 2, y + 7);
+    // Columna derecha (alineado al inicio de la columna derecha)
+    doc.text(colRightTitle, rightColX, y + 7);
+
+    y += headerHeight + 4; // dejar un pequeño espaciado debajo del header
+    doc.setTextColor(0,0,0);
+    doc.setFont('helvetica','normal');
+  }
+
+  // Empezar PDF
+  dibujarTituloPrincipal();
+
+  // === Registros Únicos ===
+  if(unicos.length>0){
+    nuevaSeccion('Registros Únicos', 'Registro', 'Descripción');
+
+    unicos.forEach(u => {
+      const leftText = u;
+      const rightText = 'No se repite en ningún archivo';
+
+      const leftLines = doc.splitTextToSize(leftText, leftColWidth - 6);
+      const rightLines = doc.splitTextToSize(rightText, rightColWidth - 6);
+
+      const rows = Math.max(leftLines.length, rightLines.length);
+      const rowHeight = rows * lineHeight + 2;
+
+      if(y + rowHeight > bottomLimit){ doc.addPage(); y = topMargin; nuevaSeccion('Registros Únicos', 'Registro', 'Descripción'); }
+
+      // Dibujar las líneas de texto en cada columna
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(11);
+      doc.text(leftLines, leftColX, y);
+      doc.text(rightLines, rightColX, y);
+
+      y += rowHeight;
+    });
+  }
+
+  // === Registros Duplicados ===
+  if(duplicados.length>0){
+    nuevaSeccion('Registros', 'Registro', 'Registros Duplicados');
+
+    duplicados.forEach(d => {
+      const item = contadorGlobal[d];
+      const leftText = d;
+      const info = `${item.total} veces en archivos: ${item.archivos.map(a=>`${a.nombre} [línea ${a.linea}]`).join(', ')}`;
+
+      const leftLines = doc.splitTextToSize(leftText, leftColWidth - 6);
+      const rightLines = doc.splitTextToSize(info, rightColWidth - 6);
+
+      const rows = Math.max(leftLines.length, rightLines.length);
+      const rowHeight = rows * lineHeight + 2;
+
+      if(y + rowHeight > bottomLimit){ doc.addPage(); y = topMargin; nuevaSeccion('Registros', 'Registro', 'Registros Duplicados'); }
+
+      doc.setFont('helvetica','normal');
+      doc.setFontSize(11);
+      doc.text(leftLines, leftColX, y);
+      doc.setFont('helvetica','bold');
+      doc.text(rightLines, rightColX, y);
+      doc.setFont('helvetica','normal');
+
+      y += rowHeight;
+    });
+  }
+
+  doc.save('consulta_completa_columnas.pdf');
+});
+</script>
+
+</body>
+</html>

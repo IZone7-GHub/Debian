@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Comparador de Productos - VLOOKUP</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+<!-- Importar fuente moderna Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    /* Paleta Institucional Opción 1: Naranja Atardecer / Modern SaaS */
+    --primary: #f97316;          /* Naranja vibrante principal */
+    --primary-hover: #ea580c;    /* Naranja más oscuro para hover */
+    --success: #16a34a;          /* Verde para cargar CSV e imprimir */
+    --success-hover: #15803d;
+    --bg-color: #0c0a09;         /* Antracita / Negro cálido de fondo */
+    --bg-gradient: radial-gradient(circle at 80% 20%, #292524 0%, #0c0a09 60%, #431407 100%);
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-main: #1c1917;
+    --text-muted: #78716c;
+    --border-color: #d6d3d1;
+}
+
+body { 
+    font-family: 'Inter', sans-serif; 
+    background: var(--bg-color); 
+    background-image: var(--bg-gradient);
+    background-attachment: fixed;
+    color: #f5f5f4;
+    padding: 30px 20px; 
+    margin: 0;
+    text-align: center; 
+}
+
+/* Efecto de Latido / Pulsación (Heartbeat Animation) para la imagen 001.png */
+@keyframes latido {
+    0% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(249, 115, 22, 0.4));
+    }
+    50% {
+        transform: scale(1.08);
+        filter: drop-shadow(0 0 25px rgba(249, 115, 22, 0.8));
+    }
+    100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px rgba(249, 115, 22, 0.4));
+    }
+}
+
+.pulsing-logo {
+    width: 70px;
+    height: auto;
+    animation: latido 2s infinite ease-in-out;
+}
+
+/* Encabezado Principal */
+.header-container {
+    max-width: 850px;
+    margin: 0 auto 25px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(41, 37, 36, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header-title-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+h1 { 
+    color: #fb923c; /* Naranja claro brillante para destacar en el fondo oscuro */
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Botón de Regresar Estilizado */
+.btn-back {
+    text-decoration: none; 
+    background: #44403c; 
+    color: white; 
+    padding: 10px 18px; 
+    border-radius: 8px; 
+    font-size: 13px; 
+    font-weight: 600;
+    transition: background 0.2s, transform 0.1s;
+    display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.btn-back:hover { 
+    background: #57534e; 
+    transform: translateY(-1px);
+}
+
+/* Contenedor de Tarjetas */
+.flex-container {
+    display: flex;
+    gap: 30px;
+    justify-content: center; 
+    max-width: 850px;
+    margin: 0 auto 20px auto;
+}
+
+.card-box {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+    text-align: left;
+    flex: 1;
+}
+
+.card-box h3 {
+    margin-top: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-main);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 8px;
+}
+
+textarea { 
+    width: 100%; 
+    height: 160px; 
+    margin-top: 10px; 
+    font-family: monospace; 
+    font-size: 13px; 
+    line-height: 1.5;
+    color: var(--text-main);
+    background: #fafaf9;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px;
+    box-sizing: border-box;
+    resize: vertical;
+    transition: all 0.2s;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+}
+
+/* Botones Generales Modernos */
+button { 
+    padding: 12px 22px; 
+    margin: 5px 0; 
+    background: var(--primary); 
+    color: white; 
+    border: none; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+button:hover { 
+    background: var(--primary-hover); 
+    box-shadow: 0 6px 12px rgba(249, 115, 22, 0.4);
+    transform: translateY(-1px);
+}
+button:active {
+    transform: translateY(0);
+}
+
+/* Botones Verdes */
+.btn-green {
+    background: var(--success);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+.btn-green:hover {
+    background: var(--success-hover);
+    box-shadow: 0 6px 12px rgba(22, 163, 74, 0.4);
+}
+
+/* Barra de Botones Superiores */
+.buttons-main {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    align-items: center;
+    margin: 25px auto;
+    max-width: 850px;
+}
+
+/* Tabla de Resultados Estilizada */
+table { 
+    border-collapse: separate; 
+    border-spacing: 0;
+    margin: 25px auto;  
+    width: 850px; 
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+}
+th, td { 
+    padding: 14px 18px; 
+    text-align: left; 
+    font-size: 14px;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-color);
+}
+table tr:last-child td {
+    border-bottom: none;
+}
+th { 
+    background-color: var(--primary); 
+    color: white; 
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+tr:nth-child(even) {
+    background-color: #fafaf9;
+}
+tr:hover {
+    background-color: #f5f5f4;
+}
+
+/* Contenedor de botones inferior */
+.buttons-results {
+    margin: 25px auto;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Estilos para la Ventana Modal de Bienvenida */
+#modal-info {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(12, 10, 9, 0.8);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: white;
+    color: var(--text-main);
+    padding: 35px;
+    border-radius: 16px;
+    width: 600px;
+    max-width: 90%;
+    text-align: left;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    position: relative;
+    max-height: 85vh;
+    overflow-y: auto;
+}
+.modal-content h2 {
+    color: #c2410c;
+    margin-top: 0;
+    font-size: 22px;
+}
+.modal-content h3 {
+    font-size: 15px;
+    color: var(--text-main);
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+.modal-content ul {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+.btn-cerrar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    margin: 0;
+    box-shadow: none;
+}
+.btn-cerrar:hover {
+    background: var(--primary-hover);
+}
+</style>
+</head>
+<body>
+
+<!-- Ventana Modal de Bienvenida / Portafolio -->
+<div id="modal-info">
+    <div class="modal-content">
+        <button class="btn-cerrar" onclick="cerrarModal()">Cerrar</button>
+        <h2>Comparador de Productos</h2>
+        <h3>¿Cómo utilizar este proyecto?</h3>
+        <ul>
+            <li>En el cuadro de la izquierda ingresa los <strong>IDs de productos</strong> que deseas consultar.</li>
+            <li>En el cuadro de la derecha tienes la base de datos del <strong>Inventario</strong> (puedes editarlo o cargar un archivo CSV con el botón verde).</li>
+            <li>Haz clic en <strong>"Comparar"</strong> para ejecutar la búsqueda avanzada tipo VLOOKUP.</li>
+            <li>Al finalizar, utiliza las opciones inferiores para exportar en <strong>CSV</strong>, <strong>PDF</strong> o <strong>Imprimir</strong>.</li>
+        </ul>
+        
+        <h3>Tecnologías utilizadas</h3>
+        <ul>
+            <li><strong>HTML5 & CSS3</strong> → Estructura y diseño moderno con variables y fuentes tipográficas (Inter).</li>
+            <li><strong>JavaScript (Vanilla JS)</strong> → Lógica de procesamiento de datos y manipulación del DOM.</li>
+            <li><strong>jsPDF & AutoTable</strong> → Generación automatizada de reportes corporativos en PDF.</li>
+        </ul>
+
+        <h3>Características principales</h3>
+        <ul>
+            <li>Diseño responsive, adaptado a cualquier dispositivo y pantalla.</li>
+            <li>Manejo dinámico de inventarios y validación de artículos no encontrados.</li>
+            <li>Exportación profesional con formato de moneda y marcas de cierre de archivo.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Cabecera con Título, Logo Animado (001.png) y Botón Regresar -->
+<div class="header-container">
+    <div class="header-title-wrapper">
+        <img src="imgs/001.png" alt="Logo JS" class="pulsing-logo">
+        <h1>Comparador de Productos</h1>
+    </div>
+    <a href="https://github.com/IZone7-GHub/Debian/blob/main/02_Desarrollo_Web/README.md" class="btn-back">⬅️ Regresar al README</a>
+</div>
+
+<!-- Tarjetas con Textareas Modernos -->
+<div class="flex-container">
+    <div class="card-box">
+        <h3>IDs a Buscar</h3>
+        <textarea id="file1">ID
+10
+11
+15</textarea>
+    </div>
+    <div class="card-box">
+        <h3>Inventario General</h3>
+        <textarea id="file2">ID,Descripción ,Precio
+10,Refresco1L  ,18.00
+11,Refresco2L  ,25.00
+12,SopaInstan  ,11.00
+13,JugoManzan  ,18.00
+14,GalletasSal ,20.00</textarea>
+    </div>
+</div>
+
+<!-- Botones de Acción Superiores -->
+<div class="buttons-main">
+    <button onclick="location.reload()">Refresh</button>
+    <button onclick="buscarV()">Comparar</button>
+    <button class="btn-green" onclick="document.getElementById('fileInput').click()">Cargar CSV a Inventario</button>
+    <input type="file" id="fileInput" accept=".csv" style="display:none" onchange="cargarCSV(event)">
+</div>
+
+<!-- Contenedor de Resultados -->
+<div id="resultado"></div>
+
+<script>
+// Función para cerrar el modal
+function cerrarModal() {
+    document.getElementById('modal-info').style.display = 'none';
+}
+
+// Función BuscarV
+let resultadoFinal = [];
+function buscarV() {
+    const file1Text = document.getElementById("file1").value.trim();
+    const file2Text = document.getElementById("file2").value.trim();
+
+    const file1Lines = file1Text.split("\n").slice(1); 
+    const file2Lines = file2Text.split("\n");
+    const file2Header = ["ID","Descripción","Precio"];
+    const file2Data = file2Lines.slice(1).map(l => {
+        const parts = l.split(",");
+        return { ID: parts[0], Descripción: parts[1] || "No encontrado", Precio: parts[2] || "No encontrado" };
+    });
+
+    let result = [];
+    file1Lines.forEach(id => {
+        const found = file2Data.find(p => p.ID === id.trim());
+        if(found) result.push(found);
+        else result.push({ ID: id.trim(), Descripción: "No encontrado", Precio: "No encontrado" });
+    });
+
+    resultadoFinal = result; 
+    mostrarResultado(result, file2Header);
+}
+
+// Mostrar resultado en tabla web
+function mostrarResultado(data, header) {
+    let html = "<table><tr><th style='text-align:center; width: 60px;'>N°</th>";
+    header.forEach((h, index) => {
+        let alignStyle = (index === 2) ? "text-align:right;" : "text-align:left;";
+        html += `<th style='${alignStyle}'>${h}</th>`;
+    });
+    html += "</tr>";
+    
+    data.forEach((row, index) => {
+        let precioFormateado = row.Precio;
+        if (!isNaN(row.Precio) && row.Precio !== "No encontrado") {
+            precioFormateado = "$ " + parseFloat(row.Precio).toFixed(2);
+        }
+        html += `<tr>
+            <td style="text-align:center; font-weight:600; color:#78716c;">${index + 1}</td>
+            <td>${row.ID}</td>
+            <td>${row.Descripción}</td>
+            <td style="text-align:right; font-weight:600;">${precioFormateado}</td>
+        </tr>`;
+    });
+    html += "</table>";
+
+    // Botones de acción inferiores
+    html += `
+    <div class="buttons-results">
+        <button onclick="downloadCSV()">Descargar CSV</button>
+        <button onclick="downloadPDF()">Descargar PDF</button>
+        <button class="btn-green" onclick="window.print()">Imprimir</button>
+    </div>`;
+
+    document.getElementById("resultado").innerHTML = html;
+}
+
+// Descargar CSV
+function downloadCSV() {
+    if(resultadoFinal.length === 0) return alert("Primero genera el resultado.");
+    const header = ["N°","ID","Descripción","Precio"];
+    let csv = [header.join(",")];
+    resultadoFinal.forEach((r, index) => {
+        let precioFinal = (!isNaN(r.Precio) && r.Precio !== "No encontrado") ? "$ " + parseFloat(r.Precio).toFixed(2) : r.Precio;
+        csv.push([index + 1, r.ID, r.Descripción, precioFinal].join(","));
+    });
+    const blob = new Blob([csv.join("\n")], {type:"text/csv"});
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "resultado.csv";
+    link.click();
+}
+
+// Descargar PDF ejecutivo con tono naranja institucional
+function downloadPDF() {
+    if(resultadoFinal.length === 0) return alert("Primero genera el resultado.");
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setTextColor(194, 65, 12); // Tono naranja oscuro elegante para el título
+    doc.setFontSize(15);
+    doc.setFont("helvetica", "bold");
+    doc.text("Reporte de Comparación de Productos", doc.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
+
+    doc.setTextColor(120, 113, 108);
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text("Sistema de Coincidencias VLOOKUP", doc.internal.pageSize.getWidth() / 2, 21, { align: 'center' });
+
+    const head = [["N°", "ID", "Descripción", "Precio"]];
+    const body = resultadoFinal.map((r, index) => {
+        let precioFormateado = r.Precio;
+        if (!isNaN(r.Precio) && r.Precio !== "No encontrado") {
+            precioFormateado = "$ " + parseFloat(r.Precio).toFixed(2);
+        }
+        return [index + 1, r.ID, r.Descripción, precioFormateado];
+    });
+
+    doc.autoTable({
+        head: head,
+        body: body,
+        startY: 28,
+        theme: 'striped',
+        headStyles: { 
+            fillColor: [249, 115, 22], // Naranja corporativo vibrante
+            textColor: [255, 255, 255],
+            fontStyle: 'bold',
+            halign: 'center',
+            cellPadding: 7
+        },
+        alternateRowStyles: {
+            fillColor: [250, 250, 249]
+        },
+        columnStyles: {
+            0: { halign: 'center', cellWidth: 20 },
+            1: { halign: 'center', cellWidth: 35 },
+            2: { halign: 'left' },
+            3: { halign: 'right', cellWidth: 45 }
+        },
+        styles: { 
+            fontSize: 10,
+            cellPadding: 6,
+            textColor: [28, 25, 23],
+            lineColor: [214, 211, 209],
+            lineWidth: 0.1
+        },
+        didDrawPage: function (data) {
+            let finalY = data.cursor.y + 12;
+            let pageWidth = doc.internal.pageSize.getWidth();
+            
+            doc.setDrawColor(214, 211, 209);
+            doc.setLineWidth(0.4);
+            doc.line(14, finalY, pageWidth - 14, finalY);
+
+            doc.setTextColor(168, 162, 158);
+            doc.setFontSize(9);
+            doc.setFont("helvetica", "italic");
+            doc.text("< Fin de Archivo >", pageWidth / 2, finalY + 8, { align: 'center' });
+        }
+    });
+
+    doc.save("resultado_productos.pdf");
+}
+
+// Cargar CSV
+function cargarCSV(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById("file2").value = e.target.result.trim();
+    };
+    reader.readAsText(file);
+}
+</script>
+</body>
+</html>

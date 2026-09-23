@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Defensa de Servidor</title>
+<style>
+body { 
+    background-color: #0d1117; 
+    color: #c9d1d9; 
+    font-family: monospace; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    margin: 0; 
+    padding: 20px; 
+}
+
+#computadoras { 
+    display: flex; 
+    justify-content: space-between; 
+    width: 90%; 
+    max-width: 800px; 
+    margin-bottom: 20px; 
+    position: relative; 
+    height: 180px; 
+    align-items: center; 
+}
+
+.computadora { position: relative; }
+.computadora img { 
+    width: 150px; 
+    height: 150px; 
+    border-radius: 10px; 
+    border: none; 
+    transition: filter 0.5s; 
+}
+#atacante img { box-shadow: 0 0 20px rgba(255, 50, 50, 0.7); }
+#servidor img { box-shadow: 0 0 20px rgba(50, 150, 255, 0.7); }
+
+#comenzar { 
+    position: absolute; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    z-index: 10; 
+    padding: 15px 30px; 
+    font-size: 20px; 
+    font-weight: bold; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    border:none; 
+    background-color:#2563eb; 
+    color:white; 
+}
+#comenzar:hover { background-color:#3b82f6; }
+
+.resplandor { 
+    position: absolute; 
+    width: 160px; 
+    height: 160px; 
+    border-radius: 50%; 
+    top: 50%; 
+    left: 0; 
+    transform: translate(-50%, -50%); 
+    pointer-events: none; 
+    box-shadow: 0 0 50px 20px #ffdd00; 
+    animation: explosion 1s ease-out forwards; 
+}
+@keyframes explosion { 
+    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 
+    100% { transform: translate(-50%, -50%) scale(2); opacity: 0; } 
+}
+
+.fuego { 
+    position: absolute; 
+    width: 20px; 
+    height: 40px; 
+    background: radial-gradient(circle, #ff5e00 0%, transparent 70%); 
+    top: 10px; 
+    left: 50%; 
+    transform: translateX(-50%) scaleY(0); 
+    border-radius: 50% 50% 50% 50%; 
+    animation: flame 1s linear infinite; 
+    opacity: 0.7; 
+}
+@keyframes flame { 
+    0% { transform: translateX(-50%) scaleY(0); opacity: 0.5; } 
+    50% { transform: translateX(-50%) scaleY(1) rotate(5deg); opacity: 1; } 
+    100% { transform: translateX(-50%) scaleY(0); opacity: 0; } 
+}
+
+.cruz-roja { 
+    position: absolute; 
+    width: 200px; 
+    height: 200px; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%) scale(0.5); 
+    font-size: 200px; 
+    color: red; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    pointer-events: none; 
+    opacity: 0; 
+    transition: transform 0.5s ease, opacity 0.5s ease; 
+}
+
+#contador { 
+    background-color: #161b22; 
+    width: 90%; 
+    max-width: 800px; 
+    min-height: 60px; 
+    padding: 10px; 
+    border-radius: 10px; 
+    box-shadow: 0 0 10px #39ff14; 
+    overflow-y: hidden; 
+    margin-bottom: 10px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 1.6rem; 
+    font-weight: bold; 
+    text-align: center; 
+    white-space: pre-line; 
+}
+
+#mensajeComando { 
+    margin: 20px 0; 
+    font-size: 18px; 
+    color: #ffdd00; 
+    text-align: center; 
+}
+
+#terminal { 
+    background-color: #161b22; 
+    width: 90%; 
+    max-width: 800px; 
+    padding: 10px; 
+    border-radius: 10px; 
+    box-shadow: 0 0 10px #39ff14; 
+    display: flex; 
+    flex-direction: column; 
+    margin-bottom: 10px; 
+    font-family: monospace; 
+}
+
+/* Terminal: mismo tamaño de fuente para ambas líneas */
+#promptTop, #inputLine span { 
+    white-space: pre; 
+    font-size: 20px; 
+    font-weight: bold; 
+    font-family: monospace;
+}
+
+#inputLine { 
+    display: flex; 
+    align-items: center; 
+    margin-top: 0; 
+}
+
+input { 
+    flex: 1; 
+    background: none; 
+    border: none; 
+    color: #c9d1d9; 
+    font-family: monospace; 
+    font-size: 20px; 
+    outline: none; 
+}
+
+#reiniciar {
+    padding: 15px 30px;  
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    background-color: #2563eb;
+    color: white;
+    margin-bottom: 20px;
+    width: auto;
+}
+#reiniciar:hover { background-color:#3b82f6; }
+
+.success { color: #39ff14; }
+.alert { color: #ffdd00; }
+.error { color: #ff3860; }
+.punto-rojo { position: absolute; width: 8px; height: 8px; border-radius: 50%; background-color: #ff3860; }
+
+</style>
+</head>
+<body>
+
+<div id="computadoras">
+    <div class="computadora" id="atacante">
+        <img src="imgs/003_hackercute.png" alt="Atacante">
+        <div class="cruz-roja" id="cruzAtacante">✖</div>
+    </div>
+
+    <button id="comenzar">Comenzar</button>
+
+    <div class="computadora" id="servidor">
+        <img src="imgs/003_hackercutedefense.png" alt="Servidor">
+        <div id="fuegoContainer"></div>
+        <div class="cruz-roja" id="cruzServidor">✖</div>
+    </div>
+</div>
+
+<div id="contador">
+    <div id="lineaContador">Simulador educativo de ciberseguridad.</div>
+</div>
+
+<div id="mensajeComando">
+    Escribe la defensa correcta para detener el ataque
+</div>
+
+<div id="terminal">
+    <div id="promptTop">┌──(root㉿simulador)-[~]</div>
+    <div id="inputLine">
+        <span>└─$ </span>
+        <input type="text" id="commandInput" disabled>
+    </div>
+</div>
+
+<button id="reiniciar" disabled>Reiniciar</button>
+
+<script>
+const lineaContador = document.getElementById('lineaContador');
+const input = document.getElementById('commandInput');
+const reiniciarBtn = document.getElementById('reiniciar');
+const comenzarBtn = document.getElementById('comenzar');
+const servidor = document.getElementById('servidor').querySelector('img');
+const atacanteDiv = document.getElementById('atacante');
+const fuegoContainer = document.getElementById('fuegoContainer');
+const cruzServidor = document.getElementById('cruzServidor');
+const cruzAtacante = document.getElementById('cruzAtacante');
+
+const ataques = [
+{ nombre:"DDoS", descripcion:"Tráfico masivo al puerto 80", comando:"sudo ufw deny 80" }, 
+{ nombre:"Brute Force SSH", descripcion:"Intentos repetidos de login SSH", comando:"sudo ufw limit ssh" }, 
+{ nombre:"Inyección SQL", descripcion:"Intento de acceso a base de datos", comando:"sudo ufw deny 3306" }, 
+{ nombre:"Ataque a DNS", descripcion:"Consulta maliciosa DNS", comando:"sudo ufw deny 53" }, 
+{ nombre:"Ataque a SMTP", descripcion:"Correo malicioso detectado", comando:"sudo ufw deny 25" }, 
+{ nombre:"Escaneo de Puertos", descripcion:"Exploración de puertos abiertos", comando:"sudo ufw deny 1:65535/tcp" }, 
+{ nombre:"ARP Spoofing", descripcion:"IP falsa detectada", comando:"sudo iptables -A INPUT -s 192.168.0.100 -j DROP" }, 
+{ nombre:"Ping Flood", descripcion:"Ataque ICMP masivo", comando:"sudo ufw deny proto icmp" }, 
+{ nombre:"RDP Brute Force", descripcion:"Intentos de acceso remoto Windows", comando:"sudo ufw deny 3389" }, 
+{ nombre:"MySQL Exploit", descripcion:"Intento de explotación MySQL", comando:"sudo ufw deny 3306" }, 
+{ nombre:"Telnet Attack", descripcion:"Intento de acceso Telnet", comando:"sudo ufw deny 23" }, 
+{ nombre:"Redis Unauthorized Access", descripcion:"Acceso no autorizado Redis", comando:"sudo ufw deny 6379" }, 
+{ nombre:"Memcached Amplification", descripcion:"Tráfico masivo Memcached", comando:"sudo ufw deny 11211" }, 
+{ nombre:"MongoDB Unauthorized Access", descripcion:"Acceso no autorizado MongoDB", comando:"sudo ufw deny 27017" }, 
+{ nombre:"CIFS/SMBv1 Exploit", descripcion:"Intento de acceso SMBv1 antiguo", comando:"sudo ufw deny 139" }, 
+{ nombre:"Ataque FTP", descripcion:"Intento de acceso FTP", comando:"sudo ufw deny 21" }, 
+{ nombre:"Ataque HTTP", descripcion:"Solicitud maliciosa HTTP", comando:"sudo ufw deny 80" }, 
+{ nombre:"Ataque HTTPS", descripcion:"Certificado sospechoso detectado", comando:"sudo ufw deny 443" }, 
+{ nombre:"Ataque SMB", descripcion:"Intento de acceso SMB", comando:"sudo ufw deny 445" }, 
+{ nombre:"Ataque IMAP", descripcion:"Intento de acceso correo", comando:"sudo ufw deny 143" }
+];
+
+let nivel = 0;
+let juegoTerminado = false;
+let ataqueInterval = null;
+let ataqueTimeout = null;
+
+function limpiarIntervalos() {
+  clearInterval(ataqueInterval);
+  clearTimeout(ataqueTimeout);
+  ataqueInterval = null;
+  ataqueTimeout = null;
+}
+
+function crearPuntosRojo(intensidad) {
+  const container = document.getElementById('computadoras');
+  const punto = document.createElement('div');
+  punto.classList.add('punto-rojo');
+  punto.style.width = 4 + intensidad + 'px';
+  punto.style.height = 4 + intensidad + 'px';
+  punto.style.top = '50%';
+  punto.style.left = '0';
+  container.appendChild(punto);
+  let pos = 0;
+  const anim = setInterval(() => {
+      if(pos >= 630){ clearInterval(anim); punto.remove(); }
+      else { pos += 10; punto.style.left = pos + 'px'; }
+  }, 50);
+}
+
+function explosionAtacante() {
+  const resplandor = document.createElement('div');
+  resplandor.classList.add('resplandor');
+  atacanteDiv.appendChild(resplandor);
+  setTimeout(() => resplandor.remove(), 1200);
+}
+
+function crearFuego() {
+  const fuego = document.createElement('div');
+  fuego.classList.add('fuego');
+  fuegoContainer.appendChild(fuego);
+  setTimeout(() => fuego.remove(), 1000);
+}
+
+function mostrarCruzServidor() {
+  cruzServidor.style.opacity = 1;
+  cruzServidor.style.transform = "translate(-50%, -50%) scale(1)";
+}
+
+function mostrarCruzAtacante() {
+  cruzAtacante.style.opacity = 1;
+  cruzAtacante.style.transform = "translate(-50%, -50%) scale(1)";
+}
+
+function iniciarAtaque() {
+  limpiarIntervalos();
+  let contador = 0;
+  juegoTerminado = false;
+  input.disabled = false;
+  cruzServidor.style.opacity = 0;
+  cruzServidor.style.transform = "translate(-50%, -50%) scale(0.5)";
+  cruzAtacante.style.opacity = 0;
+  cruzAtacante.style.transform = "translate(-50%, -50%) scale(0.5)";
+  fuegoContainer.innerHTML = '';
+  servidor.style.filter = 'hue-rotate(0deg) brightness(1)';
+
+  lineaContador.innerHTML = `⚠️ Ataque detectado: ${ataques[nivel].nombre}\n ${ataques[nivel].descripcion}\n 0s`;
+  lineaContador.className = "alert";
+
+  ataqueInterval = setInterval(() => {
+      if(juegoTerminado) return;
+      contador++;
+      crearPuntosRojo(contador);
+      const calor = Math.min(contador*12, 180);
+      servidor.style.filter = `hue-rotate(${calor}deg) brightness(${1 + contador*0.05})`;
+      crearFuego();
+      lineaContador.innerHTML = `⚠️ Ataque detectado: ${ataques[nivel].nombre}\n ${ataques[nivel].descripcion}\n ${contador}s`;
+  }, 1000);
+
+  ataqueTimeout = setTimeout(() => {
+      if(!juegoTerminado) {
+          lineaContador.innerHTML = `⚠️ Defensa caída! El atacante ganó esta ronda\n(Nivel ${nivel+1})`;
+          lineaContador.className = "error";
+          juegoTerminado = true;
+          input.disabled = true;
+          explosionAtacante();
+          mostrarCruzServidor();
+      }
+  }, 15000);
+}
+
+input.addEventListener('keydown', function(e) {
+  if(e.key === 'Enter' && !juegoTerminado) {
+      const respuesta = input.value.trim().toLowerCase();
+      const comandoCorrecto = ataques[nivel].comando.toLowerCase();
+      input.value = '';
+      if(respuesta === comandoCorrecto) {
+          lineaContador.innerHTML = `✅ Nivel ${nivel+1} detenido correctamente`;
+          lineaContador.className = "success";
+          explosionAtacante();
+          mostrarCruzAtacante();
+          limpiarIntervalos();
+          nivel++;
+          if(nivel >= ataques.length) {
+              lineaContador.innerHTML = "🏆 ¡Felicidades! Todos los niveles completados";
+              lineaContador.className = "success";
+              juegoTerminado = true;
+              input.disabled = true;
+              reiniciarBtn.disabled = false;
+          } else {
+              setTimeout(() => iniciarAtaque(), 1000);
+          }
+      } else {
+          lineaContador.innerHTML = `💀 Defensa incorrecta. El ataque sigue!\nPista: ${ataques[nivel].comando}`;
+          lineaContador.className = "error";
+      }
+  }
+});
+
+comenzarBtn.addEventListener('click', () => {
+  comenzarBtn.style.display = 'none';
+  reiniciarBtn.disabled = false;
+  nivel = 0;
+  iniciarAtaque();
+});
+
+reiniciarBtn.addEventListener('click', () => { 
+  nivel = 0;
+  limpiarIntervalos();
+  iniciarAtaque();
+});
+</script>
+</body>
+</html>
